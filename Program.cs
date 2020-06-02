@@ -23,8 +23,8 @@ namespace VirtualDesktopSwitcher
         public const int VK_F4 = 0x0073;
         public const int VK_TAB = 0x0009;
 
-        static NotifyIcon notifyIconLeft = new NotifyIcon();
-        static NotifyIcon notifyIconRight = new NotifyIcon();
+        static readonly NotifyIcon notifyIconLeft = new NotifyIcon();
+        static readonly NotifyIcon notifyIconRight = new NotifyIcon();
 
         static void Main()
         {
@@ -32,20 +32,20 @@ namespace VirtualDesktopSwitcher
             Application.SetCompatibleTextRenderingDefault(false);
 
             //Initialize Left Notify Icon
-            notifyIconLeft.Text="Left";
+            notifyIconLeft.Text = "Go to the left desktop";
             notifyIconLeft.ContextMenuStrip = GetContext();
             notifyIconLeft.Icon = new Icon("Left.ico");
 
             //Initialize Right Notify Icon
-            notifyIconRight.Text = "Right";
+            notifyIconRight.Text = "Go to the right desktop";
             notifyIconRight.ContextMenuStrip = GetContext();
             notifyIconRight.Icon = new Icon("Right.ico");
 
             notifyIconLeft.Visible = true;
             notifyIconRight.Visible = true;
 
-            notifyIconLeft.MouseClick += LeftClickHandler;
-            notifyIconRight.MouseClick += RightClickHandler;
+            notifyIconLeft.MouseClick += OnIconLeft_Click;
+            notifyIconRight.MouseClick += OnIconRight_Click;
 
             Application.Run();
         }
@@ -55,22 +55,22 @@ namespace VirtualDesktopSwitcher
         {
             ContextMenuStrip CMS = new ContextMenuStrip();
             CMS.Items.Add("About", null, new EventHandler(About_Program));
-            CMS.Items.Add("Close Current Desktop", null, new EventHandler(Close_Current_Desktop));
-            CMS.Items.Add("Open New Desktop", null, new EventHandler(Open_New_Desktop));
-            CMS.Items.Add("Exit",null,new EventHandler(Exit_Click));
+            CMS.Items.Add("Close Current Desktop", null, new EventHandler(OnCloseCurrentDesktop_Click));
+            CMS.Items.Add("Open New Desktop", null, new EventHandler(OnOpenNewDesktop_Click));
+            CMS.Items.Add("Exit", null, new EventHandler(Exit_Click));
 
             return CMS;
         }
-        private static void About_Program(object sender,EventArgs e)
+        private static void About_Program(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start("https://github.com/hangacs/VirtualDesktopSwitcher");
         }
 
-        private static void Close_Current_Desktop(object sender, EventArgs e)
+        private static void OnCloseCurrentDesktop_Click(object sender, EventArgs e)
         {
-            CloseCurentDesktop();
+            CloseCurrentDesktop();
         }
-        private static void Open_New_Desktop(object sender, EventArgs e)
+        private static void OnOpenNewDesktop_Click(object sender, EventArgs e)
         {
             OpenNewDesktop();
         }
@@ -83,14 +83,14 @@ namespace VirtualDesktopSwitcher
         }
 
         //Switch Virtual Desktop
-        private static void LeftClickHandler(object sender,MouseEventArgs e)
+        private static void OnIconLeft_Click(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
                 GoLeftDesktop();
             }
         }
-        private static void RightClickHandler(object sender,MouseEventArgs e)
+        private static void OnIconRight_Click(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
@@ -103,7 +103,7 @@ namespace VirtualDesktopSwitcher
         {
             CombineKey(KEY_D);
         }
-        public static void CloseCurentDesktop()
+        public static void CloseCurrentDesktop()
         {
             CombineKey(VK_F4);
         }

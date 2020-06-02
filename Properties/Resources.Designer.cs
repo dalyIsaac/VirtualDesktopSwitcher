@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace VitrualDesktopSwitcher.Properties {
+namespace VirtualDesktopSwitcher.Properties {
     using System;
     
     
